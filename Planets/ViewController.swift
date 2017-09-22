@@ -19,6 +19,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
+        self.sceneView.showsStatistics = true
         self.sceneView.session.run(configuration, options: [])
         self.sceneView.autoenablesDefaultLighting = true
         
@@ -52,12 +53,22 @@ class ViewController: UIViewController {
         let venus = planet(geometry: SCNSphere(radius: 0.1), diffuse: #imageLiteral(resourceName: "Venus Day"), emission: #imageLiteral(resourceName: "Venus Emission"), position: SCNVector3(0.7, 0, 0))
         rotatePlanet(planet: venus, degrees: 360, duration: 40)
         
+        //Moon Venus
+        let moonVenus = planet(geometry: SCNSphere(radius: 0.05), diffuse: #imageLiteral(resourceName: "Moon"), position: SCNVector3(0.3, 0, 0))
+        
+        //Moon Earth
+        let moonEarth = planet(geometry: SCNSphere(radius: 0.05), diffuse: #imageLiteral(resourceName: "Moon"), position: SCNVector3(0.3, 0, 0))
+        
         earthParent.addChildNode(earth)
         venusParent.addChildNode(venus)
+        
+        earth.addChildNode(moonEarth)
+        venus.addChildNode(moonVenus)
         
         
     }
     
+    //MARK: - Create Planets
     func planet(geometry: SCNGeometry, diffuse: UIImage, specular: UIImage? = nil, emission: UIImage? = nil, normal: UIImage? = nil, position: SCNVector3) -> SCNNode {
         let planet = SCNNode(geometry: geometry)
         planet.geometry?.firstMaterial?.diffuse.contents = diffuse
@@ -69,6 +80,7 @@ class ViewController: UIViewController {
         return planet
     }
     
+    //MARK: - Add Rotation to Planets
     func rotatePlanet(planet: SCNNode, degrees: Int, duration: Double) {
         let planetRotation = SCNAction.rotateBy(x: 0, y: CGFloat(degrees.degreesToRadians), z: 0, duration: duration)
         let planetForeverRotation = SCNAction.repeatForever(planetRotation)
