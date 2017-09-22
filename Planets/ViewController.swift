@@ -53,17 +53,17 @@ class ViewController: UIViewController {
         let venus = planet(geometry: SCNSphere(radius: 0.1), diffuse: #imageLiteral(resourceName: "Venus Day"), emission: #imageLiteral(resourceName: "Venus Emission"), position: SCNVector3(0.7, 0, 0))
         rotatePlanet(planet: venus, duration: 40)
         
-        //Moon Venus
-        let moonVenus = planet(geometry: SCNSphere(radius: 0.05), diffuse: #imageLiteral(resourceName: "Moon"), position: SCNVector3(0.3, 0, 0))
-        
         //Moon Earth
+        let moonParent = SCNNode()
+        moonParent.position = SCNVector3(0, 0, 0)
+        rotatePlanet(planet: moonParent, duration: 5)
+        
         let moonEarth = planet(geometry: SCNSphere(radius: 0.05), diffuse: #imageLiteral(resourceName: "Moon"), position: SCNVector3(0.3, 0, 0))
         
         earthParent.addChildNode(earth)
         venusParent.addChildNode(venus)
-        
-        earth.addChildNode(moonEarth)
-        venus.addChildNode(moonVenus)
+        earth.addChildNode(moonParent)
+        moonParent.addChildNode(moonEarth)
         
         
     }
